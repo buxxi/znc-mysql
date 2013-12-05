@@ -1,5 +1,6 @@
-import znc,pymysql
+import znc,pymysql,re
 from datetime import datetime
+from contextlib import closing
 
 class sql(znc.Module):
 	description = "Log all channels to a MySQL database"
@@ -81,12 +82,13 @@ class sql(znc.Module):
 		return True
 
 	def OnLoad(self, args, message):
-		try:
-			username, password = args.split(" ")
-			self.conn = pymysql.connect (host = "localhost", user = username, passwd = password, db = "irclogs")
-			print ("Loaded SQL module")
+		match = re.search("(.*?):(.*?)@(.*)", args)
+		if match:
+			self.username = match.group(1)
+			self.password = match.group(2)
+			self.host = match.group(3)
 			return True
-		except:
+		else:
 			return False
 
 	def findMode(self, channel, user):
@@ -103,7 +105,10 @@ class sql(znc.Module):
 		return (channel, user)
 
 	def insert(self, code, channel, host, user, user_mode, date, target_user, message):
-		cursor = self.conn.cursor()
-		sql = "INSERT INTO channel_log (code, channel, host, user, user_mode, date, target_user, message) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"			
-		cursor.execute (sql, [code, channel[1:], host, user, user_mode, date.isoformat(), target_user, message])
-		cursor.close ()
+		try:
+			with closing(pymysql.connect (host = self.host, user = self.username, passwd = self.password, db = "irclogs")) as conn:
+				with closing(conn.cursor()) as cursor: 
+					sql = "INSERT INTO channel_log (code, channel, host, user, user_mode, date, target_user, message) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"			
+					cursor.execute (sql, [code, channel[1:], host, user, user_mode, date.isoformat(), target_user, message])			
+		except Exception as e:
+			self.PutModule("Could not save {0} to database caused by: {1} {2}".format(code, type(e), str(e)))

@@ -2,12 +2,12 @@ znc-mysql
 =========
 a python plugin for znc to log all communication to a mysql database
 
-(Only tested against 0.206)
+(Only tested against znc 0.206 and PyMySQL 0.6)
 
 #### installation instructions
 * Create a database with the name `irclogs` and the table `channel_log` as described below
 * copy the sql.py to znc modules-folder
-* In `Your Settings` activate the sql-plugin and enter the username and password as arguments separated by a space
+* In `Your Settings` activate the sql-plugin and enter the username, password and host as arguments separated in this format `username:password@host`
 
 #### sql tables
 ```sql
@@ -28,5 +28,5 @@ CREATE TABLE `channel_log` (
 ```
 
 #### dependencies
-* MySQLdb
+* PyMySQL
 * znc python plugin

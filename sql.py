@@ -97,11 +97,10 @@ class sql(znc.Module):
 	
 	def resolveTarget(self, target):
 		target = target.s
-		channel = self.GetUser().FindChan(target)
+		channel = self.GetNetwork().FindChan(target)
 		if channel == None:
 			return (None, None)
-		nick = self.GetUser().GetCurNick()
-		user = channel.FindNick(nick)
+		user = self.GetNetwork().GetIRCNick()
 		return (channel, user)
 
 	def insert(self, code, channel, host, user, user_mode, date, target_user, message):

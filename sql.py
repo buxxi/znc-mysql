@@ -105,9 +105,9 @@ class sql(znc.Module):
 
 	def insert(self, code, channel, host, user, user_mode, date, target_user, message):
 		try:
-			with closing(pymysql.connect (host = self.host, user = self.username, passwd = self.password, db = "irclogs")) as conn:
 				with closing(conn.cursor()) as cursor: 
 					sql = "INSERT INTO channel_log (code, channel, host, user, user_mode, date, target_user, message) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"			
 					cursor.execute (sql, [code, channel[1:], host, user, user_mode, date.isoformat(), target_user, message])			
+			with closing(pymysql.connect (host = self.host, user = self.username, passwd = self.password, db = "irclogs", use_unicode=True, charset='UTF8')) as conn:
 		except Exception as e:
 			self.PutModule("Could not save {0} to database caused by: {1} {2}".format(code, type(e), str(e)))

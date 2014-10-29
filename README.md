@@ -14,6 +14,7 @@ a python plugin for znc to log all communication to a mysql database
 CREATE TABLE `channel_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` enum('MODE','UNBAN','BAN','KICK','VOICE','DEVOICE','OP','DEOP','NICK','ME','SAY','JOIN','PART','QUIT','TOPIC') DEFAULT NULL,
+  `network` text DEFAULT NULL,
   `channel` char(64) DEFAULT NULL,
   `host` char(128) DEFAULT NULL,
   `user` char(32) DEFAULT NULL,

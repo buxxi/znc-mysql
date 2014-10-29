@@ -108,6 +108,8 @@ class sql(znc.Module):
 			with closing(pymysql.connect (host = self.host, user = self.username, passwd = self.password, db = "irclogs", use_unicode=True, charset='UTF8')) as conn:
 				with closing(conn.cursor()) as cursor:
 					sql = "INSERT INTO channel_log (code, channel, host, user, user_mode, date, target_user, message, network) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+					if message is not None:
+						message = message.encode('utf-8').decode('utf-8', 'replace')
 					cursor.execute (sql, [code, channel[1:], host, user, user_mode, date.isoformat(), target_user, message, network])
 		except Exception as e:
 			self.PutModule("Could not save {0} to database caused by: {1} {2}".format(code, type(e), str(e)))

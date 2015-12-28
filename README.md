@@ -18,6 +18,7 @@ CREATE TABLE `channel_log` (
   `channel` char(64) DEFAULT NULL,
   `host` char(128) DEFAULT NULL,
   `user` char(32) DEFAULT NULL,
+  `ident` char(32) DEFAULT NULL,
   `user_mode` char(1) DEFAULT NULL,
   `target_user` char(32) DEFAULT NULL,
   `message` text,

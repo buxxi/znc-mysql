@@ -2,7 +2,7 @@ znc-mysql
 =========
 a python plugin for znc to log all communication to a mysql database
 
-(Only tested against znc 1.2 and PyMySQL 0.6)
+(Only tested against znc 1.6.3 and PyMySQL 0.7.5)
 
 #### installation instructions
 * Create a database with the name `irclogs` and the table `channel_log` as described below
@@ -26,7 +26,7 @@ CREATE TABLE `channel_log` (
   PRIMARY KEY (`id`),
   KEY `channel_index` (`channel`),
   KEY `user_index` (`user`) 
-) ENGINE=MyISAM AUTO_INCREMENT=2518095 DEFAULT CHARSET=utf8
+) ENGINE=MyISAM AUTO_INCREMENT=2518095 DEFAULT CHARSET=utf8mb4
 
 ```
 

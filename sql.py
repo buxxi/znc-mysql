@@ -3,6 +3,8 @@ from datetime import datetime
 from contextlib import closing
 
 class sql(znc.Module):
+	module_types = [znc.CModInfo.GlobalModule]
+	has_args = True
 	description = "Log all channels to a MySQL database"
 
 	def OnOp(self, user, target_user, channel, noChange):
@@ -105,7 +107,7 @@ class sql(znc.Module):
 
 	def insert(self, code, channel, host, user, ident, user_mode, date, target_user, message, network):
 		try:
-			with closing(pymysql.connect (host = self.host, user = self.username, passwd = self.password, db = "irclogs", use_unicode=True, charset='UTF8')) as conn:
+			with closing(pymysql.connect (host = self.host, user = self.username, passwd = self.password, db = "irclogs", use_unicode=True, charset='utf8mb4')) as conn:
 				with closing(conn.cursor()) as cursor:
 					sql = "INSERT INTO channel_log (code, channel, host, user, ident, user_mode, date, target_user, message, network) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 					if message is not None:

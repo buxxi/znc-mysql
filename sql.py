@@ -5,7 +5,7 @@ from contextlib import closing
 class sql(znc.Module):
 	module_types = [znc.CModInfo.GlobalModule]
 	has_args = True
-	description = "Log all channels to a MySQL database"
+	description = "Log all channels to a MySQL/MariaDB database"
 
 	def OnOp(self, user, target_user, channel, noChange):
 		self.insert("OP", channel.GetName(), user.GetHost(), user.GetNick(), user.GetIdent(), None, datetime.now(), target_user.GetNick(), None, str(self.GetNetwork()))
@@ -95,6 +95,8 @@ class sql(znc.Module):
 
 	def findMode(self, channel, user):
 		realUser = channel.FindNick(user.GetNick())
+		if not realUser:
+			return None
 		return chr(realUser.GetPermChar())
 
 	def resolveTarget(self, target):

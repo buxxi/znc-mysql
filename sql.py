@@ -3,7 +3,7 @@ from datetime import datetime
 from contextlib import closing
 
 class sql(znc.Module):
-	module_types = [znc.CModInfo.GlobalModule]
+	module_types = [znc.CModInfo.UserModule]
 	has_args = True
 	description = "Log all channels to a MySQL/MariaDB database"
 
